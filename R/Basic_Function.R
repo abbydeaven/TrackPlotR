@@ -177,7 +177,9 @@ coverage_vis_basic <- function(coverage_table,
   #basic plot
   gg_object <- ggplot2::ggplot(data = coverage_table) + 
     ggplot2::geom_area(mapping = ggplot2::aes(x = position,y = score,color = Sample,fill = Sample),stat = 'identity',position = 'identity') + 
-    ggplot2::facet_wrap(facets = ~ Sample,strip.position = 'left',ncol = 1) + 
+    ggplot2::facet_grid(rows = vars(Sample), switch = "y", scales = "free_y") +
+    ggplot2::scale_y_continuous(position = "right") +  
+  ggplot2::facet_wrap(facets = ~ Sample,strip.position = 'left',ncol = 1) + 
     ggplot2::coord_cartesian(xlim = c(start_site,end_site),ylim = c(0,y_lim),expand = FALSE) + 
     ggplot2::ylab(base::paste0('0 - ',base::format(x = y_lim,scientific = FALSE,digits = 2))) + 
     ggplot2::xlab(base::paste0(chr,' : ',base::format(x = start_site,scientific = FALSE),' - ',base::format(x = end_site,scientific = FALSE))) + 
@@ -187,6 +189,8 @@ coverage_vis_basic <- function(coverage_table,
                    axis.ticks.y = ggplot2::element_blank(),
                    axis.text.y = ggplot2::element_blank(),
                    strip.text.y = ggplot2::element_text(angle = 0))
+                   strip.placement = "outside",
+                   strip.text.y.right = element_text(angle = 0)) 
   
   #color
   if(!base::is.null(col_pal)){
